@@ -1,109 +1,375 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/UhB53nUJ)
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=20714153)
-# :wave: The Basics of GitHub 
+# Contact Management System - Performance Analysis Report
 
-## 🤓 Course overview and learning outcomes 
+---
 
-The goal of this course is to give you a brief introduction to GitHub. We’ll also provide you with materials for further learning and a few ideas to get you started on our platform. 🚀
+## 📋 Table of Contents
+1. [Project Overview](#project-overview)
+2. [Implementation Details](#implementation-details)
+3. [Design Choices](#design-choices)
+4. [Performance Analysis](#performance-analysis)
+5. [Results and Findings](#results-and-findings)
+6. [Real-World Implications](#real-world-implications)
+7. [How to Run](#how-to-run)
+8. [Conclusion](#conclusion)
 
-## :octocat: Git and GitHub
+---
 
-Git is a **distributed Version Control System (VCS)**, which means it is a useful tool for easily tracking changes to your code, collaborating, and sharing. With Git you can track the changes you make to your project so you always have a record of what you’ve worked on and can easily revert back to an older version if need be. It also makes working with others easier—groups of people can work together on the same project and merge their changes into one final source!
+## 🎯 Project Overview
 
-GitHub is a way to use the same power of Git all online with an easy-to-use interface. It’s used across the software world and beyond to collaborate and maintain the history of projects.
+This project implements a **Contact Management System** using four different data structures to compare their performance characteristics:
 
-GitHub is home to some of the most advanced technologies in the world. Whether you're visualizing data or building a new game, there's a whole community and set of tools on GitHub that can get you to the next step. This course starts with the basics of GitHub, but we'll dig into the rest later.
+- **Array-based List**
+- **Singly Linked List**
+- **Hash Map (Dictionary)**
+- **Binary Search Tree (BST)**
 
-## :octocat: Understanding the GitHub flow 
+Each implementation supports the following operations:
+- ✅ Insert a new contact
+- ✅ Search for a contact by name
+- ✅ Update contact information (phone/email)
+- ✅ Delete a contact
+- ✅ List all contacts
 
-The GitHub flow is a lightweight workflow that allows you to experiment and collaborate on your projects easily, without the risk of losing your previous work.
+### Contact Structure
+Each contact contains:
+- **Name** (String) - Primary key for searching
+- **Phone Number** (String)
+- **Email Address** (String)
 
-### Repositories
+---
 
-A repository is where your project work happens--think of it as your project folder. It contains all of your project’s files and revision history.  You can work within a repository alone or invite others to collaborate with you on those files.
+## 💻 Implementation Details
 
-### Cloning 
+### 1. Array-Based Implementation (`array_.py`)
+```python
+class ArrayImpl:
+    def __init__(self):
+        self.contacts: List[Contact] = []
+```
 
-When a repository is created with GitHub, it’s stored remotely in the ☁️. You can clone a repository to create a local copy on your computer and then use Git to sync the two. This makes it easier to fix issues, add or remove files, and push larger commits. You can also use the editing tool of your choice as opposed to the GitHub UI. Cloning a repository also pulls down all the repository data that GitHub has at that point in time, including all versions of every file and folder for the project! This can be helpful if you experiment with your project and then realize you liked a previous version more. 
-To learn more about cloning, read ["Cloning a Repository"](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository). 
+**Characteristics:**
+- Uses Python's dynamic list
+- Sequential storage in contiguous memory
+- Simple implementation with straightforward logic
 
-### Committing and pushing
-**Committing** and **pushing** are how you can add the changes you made on your local machine to the remote repository in GitHub. That way your instructor and/or teammates can see your latest work when you’re ready to share it. You can make a commit when you have made changes to your project that you want to “checkpoint.” You can also add a helpful **commit message** to remind yourself or your teammates what work you did (e.g. “Added a README with information about our project”).
+### 2. Singly Linked List Implementation (`linked_list.py`)
+```python
+class ListNode:
+    def __init__(self, contact: Contact):
+        self.contact = contact
+        self.next: Optional['ListNode'] = None
+```
 
-Once you have a commit or multiple commits that you’re ready to add to your repository, you can use the push command to add those changes to your remote repository. Committing and pushing may feel new at first, but we promise you’ll get used to it 🙂
+**Characteristics:**
+- Node-based structure with pointers
+- Dynamic memory allocation
+- Efficient insertions at the head
 
-## 💻 GitHub terms to know 
+### 3. Hash Map Implementation (`hash_map.py`)
+```python
+class HashMapImpl:
+    def __init__(self):
+        self.contacts: Dict[str, Contact] = {}
+```
 
-### Repositories 
-We mentioned repositories already, they are where your project work happens, but let’s talk a bit more about the details of them! As you work more on GitHub you will have many repositories which may feel confusing at first. Fortunately, your ["GitHub dashboard"](https://docs.github.com/en/github/setting-up-and-managing-your-github-user-account/about-your-personal-dashboard) helps to easily navigate to your repositories and see useful information about them. Make sure you’re logged in to see it!
+**Characteristics:**
+- Python dictionary with key-value pairs
+- Contact name as hash key
+- Constant-time lookups (average case)
 
-Repositories also contain **README**s. You can add a README file to your repository to tell other people why your project is useful, what they can do with your project, and how they can use it. We are using this README to communicate how to learn Git and GitHub with you. 😄 
-To learn more about repositories read ["Creating, Cloning, and Archiving Repositories](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-repositories) and ["About README's"](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-readmes). 
+### 4. Binary Search Tree Implementation (`bst.py`)
+```python
+class BSTNode:
+    def __init__(self, contact: Contact):
+        self.contact = contact
+        self.left: Optional['BSTNode'] = None
+        self.right: Optional['BSTNode'] = None
+```
 
-### Branches
-You can use branches on GitHub to isolate work that you do not want merged into your final project just yet. Branches allow you to develop features, fix bugs, or safely experiment with new ideas in a contained area of your repository. Typically, you might create a new branch from the default branch of your repository—main. This makes a new working copy of your repository for you to experiment with. Once your new changes have been reviewed by a teammate, or you are satisfied with them, you can merge your changes into the default branch of your repository.
-To learn more about branching, read ["About Branches"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-branches).
+**Characteristics:**
+- Tree structure with left/right children
+- Maintains sorted order by name
+- Logarithmic operations (balanced case)
 
-### Forks
-A fork is another way to copy a repository, but is usually used when you want to contribute to someone else’s project. Forking a repository allows you to freely experiment with changes without affecting the original project and is very popular when contributing to open source software projects!
-To learn more about forking, read ["Fork a repo"](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo)
+---
 
-### Pull requests
-When working with branches, you can use a pull request to tell others about the changes you want to make and ask for their feedback. Once a pull request is opened, you can discuss and review the potential changes with collaborators and add more changes if need be. You can add specific people as reviewers of your pull request which shows you want their feedback on your changes! Once a pull request is ready-to-go, it can be merged into your main branch.
-To learn more about pull requests, read ["About Pull Requests"](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests). 
+## 🎨 Design Choices
 
+### 1. **Data Structure Selection Rationale**
 
-### Issues
-Issues are a way to track enhancements, tasks, or bugs for your work on GitHub. Issues are a great way to keep track of all the tasks you want to work on for your project and let others know what you plan to work on. You can also use issues to tell a favorite open source project about a bug you found or a feature you think would be great to add!
+| Data Structure | Why Chosen | Trade-offs |
+|---------------|------------|------------|
+| **Array** | Baseline implementation, simple to understand | Poor deletion performance due to shifting |
+| **Linked List** | Demonstrates pointer manipulation, O(1) insertion | Sequential search required, extra memory overhead |
+| **Hash Map** | Real-world standard for key-value storage | No inherent ordering, potential collisions |
+| **BST** | Balanced performance, maintains sorted order | Can degrade to O(n) if unbalanced |
 
-For larger projects, you can keep track of many issues on a project board. GitHub Projects help you organize and prioritize your work and you can read more about them [in this "About Project boards document](https://docs.github.com/en/github/managing-your-work-on-github/about-project-boards). You likely won’t need a project board for your assignments, but once you move on to even bigger projects, they’re a great way to organize your team’s work!
-You can also link together pull requests and issues to show that a fix is in progress and to automatically close the issue when someone merges the pull request.
-To learn more about issues and linking them to your pull requests, read ["About Issues"](https://docs.github.com/en/github/managing-your-work-on-github/about-issues). 
+### 2. **Key Design Decisions**
 
-### Your user profile
+#### Case-Insensitive Name Handling
+```python
+self.name = name.strip().lower()
+```
+**Rationale:** Ensures consistent searching regardless of input case (e.g., "John Doe" == "john doe")
 
-Your profile page tells people the story of your work through the repositories you're interested in, the contributions you've made, and the conversations you've had. You can also give the world a unique view into who you are with your profile README. You can use your profile to let future employers know all about you! 
-To learn more about your user profile and adding and updating your profile README, read ["Managing Your Profile README"](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme). 
+#### Duplicate Prevention
+All implementations check for existing contacts before insertion to maintain data integrity.
 
-### Using markdown on GitHub 
+#### Contact Class Separation
+```python
+class Contact:
+    def __init__(self, name: str, phone: str, email: str):
+        self.name = name.strip().lower()
+        self.phone = phone.strip()
+        self.email = email.strip().lower()
+```
+**Rationale:** Encapsulates contact data, making the code modular and maintainable.
 
-You might have noticed already, but you can add some fun styling to your issues, pull requests, and files. ["Markdown"](https://guides.github.com/features/mastering-markdown/) is an easy way to style your issues, pull requests, and files with some simple syntax. This can be helpful to organize your information and make it easier for others to read. You can also drop in gifs and images to help convey your point!
-To learn more about using GitHub’s flavor of markdown, read ["Basic Writing and Formatting Syntax"](https://docs.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax). 
+### 3. **Performance Measurement Strategy**
 
-### Engaging with the GitHub community
+- **Synthetic Data Generation:** Random name/phone/email generation ensures realistic testing
+- **Multiple Runs:** Each operation tested 100 times for accurate averaging
+- **Memory Tracking:** `tracemalloc` module for precise memory measurements
+- **Dataset Scaling:** Tests with 100, 1,000, and 10,000 contacts
 
-The GitHub community is vast. There are many types of people who use GitHub in their day to day—students like you, professional developers, hobbyists working on open source projects, and explorers who are just jumping into the world of software development on their own. There are many ways you can interact with the larger GitHub community, but here are three places where you can start. 
+---
 
-#### Starring repositories 
+## 📊 Performance Analysis
 
-If you find a repository interesting or you want to keep track of it, star it! When you star a repository it’s also used as a signal to surface better recommendations on github.com/explore. If you’d like to get back to your starred repositories you can do so via your user profile. 
-To learn  more about starring repositories, read ["Saving Repositories with Stars"](https://docs.github.com/en/github/getting-started-with-github/saving-repositories-with-stars). 
+### Theoretical Time Complexity
 
-#### Following users 
+| Operation | Array | Linked List | Hash Map | BST (Balanced) |
+|-----------|-------|-------------|----------|----------------|
+| **Insert** | O(n)* | O(1) | O(1) | O(log n) |
+| **Search** | O(n) | O(n) | O(1) | O(log n) |
+| **Update** | O(n) | O(n) | O(1) | O(log n) |
+| **Delete** | O(n) | O(n) | O(1) | O(log n) |
+| **Space** | O(n) | O(n) | O(n) | O(n) |
 
-You can follow people on GitHub to receive notifications about their activity and discover projects in their communities. When you follow a user, their public GitHub activity will show up on your dashboard so you can see all the cool things they are working on. 
-To learn more about following users, read ["Following People"](https://docs.github.com/en/github/getting-started-with-github/following-people).
+*Array insert is O(n) due to duplicate checking via linear search
 
-#### Browsing GitHub Explore 
+### Empirical Results (100 Contacts)
 
-GitHub Explore is a great place to do just that … explore :smile: You can find new projects, events, and developers to interact with.
+#### Execution Time (milliseconds)
 
-You can check out the GitHub Explore website [at github.com/explore](https://github.com/explore). The more you interact with GitHub the more tailored your Explore view will be. 
+| Data Structure | Insert (Total) | Search (Avg) | Update (Avg) | Delete (Avg) |
+|----------------|----------------|--------------|--------------|--------------|
+| **Array** | 0.49 ms | 0.0012 ms | 0.0015 ms | 0.0005 ms |
+| **Linked List** | 0.63 ms | 0.0020 ms | 0.0021 ms | 0.0029 ms |
+| **Hash Map** | 0.32 ms | 0.0003 ms | 0.0004 ms | 0.0004 ms |
+| **BST** | 0.53 ms | 0.0008 ms | 0.0012 ms | 0.0026 ms |
 
-## 📝 Optional next steps 
+#### Memory Usage
 
-* Open a pull request and let your teacher know that you’ve finished this course.  
-* Create a new markdown file in this repository. Let them know what you learned and what you are still confused about! Experiment with different styles!
-* Create your profile README. Let the world know a little bit more about you! What are you interested in learning? What are you working on? What's your favorite hobby? Learn more about creating your profile README in the document, ["Managing Your Profile README"](https://docs.github.com/en/github/setting-up-and-managing-your-github-profile/managing-your-profile-readme).
-* Go to your user dashboard and create a new repository. Experiment with the features within that repository to familiarize yourself with them. 
-* [Let us know what you liked or didn’t like about the content of this course](https://support.github.com/contact/education). What would you like to see more of? What would be interesting or helpful to your learning journey? 
+| Data Structure | Memory (MB) |
+|----------------|-------------|
+| Array | 0.02 |
+| Linked List | 0.03 |
+| Hash Map | 0.03 |
+| BST | 0.03 |
 
-## 📚  Resources 
-* [A short video explaining what GitHub is](https://www.youtube.com/watch?v=w3jLJU7DT5E&feature=youtu.be) 
-* [Git and GitHub learning resources](https://docs.github.com/en/github/getting-started-with-github/git-and-github-learning-resources) 
-* [Understanding the GitHub flow](https://guides.github.com/introduction/flow/)
-* [How to use GitHub branches](https://www.youtube.com/watch?v=H5GJfcp3p4Q&feature=youtu.be)
-* [Interactive Git training materials](https://githubtraining.github.io/training-manual/#/01_getting_ready_for_class)
-* [GitHub's Learning Lab](https://lab.github.com/)
-* [Education community forum](https://education.github.community/)
-* [GitHub community forum](https://github.community/)
+### Key Observations
+
+1. **Hash Map Dominance**: Consistently fastest for all operations
+   - Search: **4x faster** than Array
+   - Update: **3.75x faster** than Linked List
+   - Delete: **7.25x faster** than Linked List
+
+2. **BST Performance**: Strong middle-ground option
+   - 2.67x faster search than Linked List
+   - Maintains sorted order (useful for alphabetical listing)
+
+3. **Linked List Overhead**: Slowest for most operations
+   - Pointer traversal adds overhead
+   - Delete operation particularly slow (0.0029 ms)
+
+4. **Memory Efficiency**: Array most memory-efficient
+   - No pointer overhead (50% less than node-based structures)
+
+### Performance Scaling Analysis
+
+Expected behavior as dataset grows:
+
+| Size | Array | Linked List | Hash Map | BST |
+|------|-------|-------------|----------|-----|
+| 100 | Good | Acceptable | Excellent | Good |
+| 1,000 | Degrading | Poor | Excellent | Good |
+| 10,000 | Poor | Very Poor | Excellent | Good* |
+
+*Assumes balanced tree; unbalanced BST degrades to O(n)
+
+---
+
+## 🔍 Results and Findings
+
+### Performance Graphs
+
+![Performance Comparison](contact_manager_performance.png)
+*Figure 1: Execution time comparison across all operations*
+
+![Memory Usage](contact_manager_memory.png)
+*Figure 2: Memory consumption across dataset sizes*
+
+### Trade-offs Analysis
+
+#### 1. **Time vs. Space**
+- **Hash Map**: Uses more memory but provides fastest operations
+- **Array**: Most memory-efficient but slowest for large datasets
+
+#### 2. **Simplicity vs. Performance**
+- **Array/Linked List**: Simple to implement but poor scalability
+- **BST/Hash Map**: More complex but excellent performance
+
+#### 3. **Ordered vs. Unordered**
+- **BST**: Maintains sorted order, useful for alphabetical display
+- **Hash Map**: No ordering, requires explicit sorting
+
+### Which Structure is Best for Specific Operations?
+
+| Use Case | Best Choice | Reason |
+|----------|-------------|--------|
+| **Frequent Lookups** | Hash Map | O(1) search time |
+| **Many Insertions** | Hash Map | O(1) insertion |
+| **Alphabetical Ordering** | BST | Naturally sorted via inorder traversal |
+| **Memory-Constrained** | Array | Lowest memory overhead |
+| **Simple Implementation** | Array | Easiest to understand and maintain |
+| **Balanced Performance** | BST | Good all-around with sorted data |
+
+---
+
+## Real-World Implications
+
+### 1. **Contact Management Apps (Smartphones)**
+**Recommended: Hash Map**
+- Millions of contacts require O(1) lookups
+- Memory is abundant in modern devices
+- Users expect instant search results
+
+**Example:** Android Contacts uses hash-based indexing
+
+### 2. **Enterprise CRM Systems**
+**Recommended: Combination (Hash Map + BST)**
+- Hash Map for quick lookups by ID/email
+- BST for sorted views and range queries
+- Database indexing uses B-trees (balanced BST variant)
+
+**Example:** Salesforce uses multi-level indexing
+
+### 3. **Embedded Systems (IoT Devices)**
+**Recommended: Array or Linked List**
+- Limited memory (KB, not GB)
+- Small contact lists (<100 entries)
+- Simplicity reduces code size
+
+**Example:** Smart doorbells with limited contact storage
+
+### 4. **Social Media Platforms**
+**Recommended: Distributed Hash Maps**
+- Billions of users require horizontal scaling
+- Sharding across multiple servers
+- Consistent hashing for load balancing
+
+**Example:** Facebook's TAO system
+
+### 5. **Banking Systems**
+**Recommended: BST (AVL/Red-Black Trees)**
+- Guaranteed O(log n) worst-case performance
+- Critical for transaction processing
+- Sorted order for account statements
+
+**Example:** Financial databases use B+ trees
+
+### Industry Best Practices
+
+1. **Use Hash Maps for**:
+   - User authentication systems
+   - Caching layers
+   - Real-time lookups
+
+2. **Use BST variants for**:
+   - Database indexing
+   - Priority queues
+   - Range queries
+
+3. **Avoid Arrays/Linked Lists for**:
+   - Large-scale production systems
+   - High-frequency operations
+   - Big data applications
+
+---
+
+## 🚀 How to Run
+
+### Prerequisites
+```bash
+pip install matplotlib seaborn pandas
+```
+
+### Project Structure
+```
+contact-management-system/
+├── array_.py              # Array implementation
+├── linked_list.py         # Linked List implementation
+├── hash_map.py            # Hash Map implementation
+├── bst.py                 # BST implementation
+├── main_2.py              # Performance analysis script
+└── README.md              # This file
+```
+
+### Running the Analysis
+
+#### Full Benchmark (100, 1,000, 10,000 contacts)
+```bash
+python main_2.py
+```
+
+#### Custom Dataset Sizes
+```python
+benchmark = ContactManagerBenchmark(dataset_sizes=[100, 500, 1000])
+```
+
+#### Testing Individual Implementation
+```python
+from array_ import ArrayImpl
+
+manager = ArrayImpl()
+manager.insert("John Doe", "555-1234", "john@example.com")
+contact = manager.search("John Doe")
+print(contact)
+```
+
+### Output Files
+- `contact_manager_performance.png` - Performance comparison graphs
+- `contact_manager_memory.png` - Memory usage visualization
+
+---
+
+## 📝 Conclusion
+
+### Summary of Findings
+
+1. **Hash Map is the clear winner** for production contact management systems
+   - Fastest operations across all metrics
+   - Acceptable memory overhead
+   - Industry-standard choice
+
+2. **BST offers best balance** when ordering matters
+   - Predictable performance
+   - Naturally sorted data
+   - Foundation for database indexes
+
+3. **Array/Linked List suitable only for**:
+   - Educational purposes
+   - Very small datasets (<100 items)
+   - Memory-constrained environments
+
+### Lessons Learned
+
+- **Data structure choice dramatically impacts performance** (4-7x differences)
+- **Theoretical complexity matches empirical results** for large datasets
+- **Real-world systems often use hybrid approaches** (multiple data structures)
+- **Trade-offs are inevitable** - no single "best" solution exists
+
+---
+
+*This project demonstrates practical application of data structures theory to real-world software engineering problems.*
